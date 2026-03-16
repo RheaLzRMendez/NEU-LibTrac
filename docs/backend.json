@@ -1,0 +1,196 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user (student or faculty) of the NEU Library Visitor Management System.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "The institutional email address of the user (e.g., @neu.edu.ph).",
+          "format": "email"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The full name of the user."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the user within the system ('admin' for library staff, 'user' for students/faculty)."
+        },
+        "collegeId": {
+          "type": "string",
+          "description": "Reference to the College entity the user belongs to. (Relationship: College 1:N User)"
+        },
+        "isBlocked": {
+          "type": "boolean",
+          "description": "Indicates whether the user is blocked from accessing the library facility or the application."
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "displayName",
+        "role",
+        "collegeId",
+        "isBlocked"
+      ]
+    },
+    "VisitLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "VisitLog",
+      "type": "object",
+      "description": "Records individual visit entries by users to the NEU Library.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the VisitLog entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User who performed this visit. (Relationship: User 1:N VisitLog)"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The date and time when the user checked into the library.",
+          "format": "date-time"
+        },
+        "purposeOfVisitId": {
+          "type": "string",
+          "description": "Reference to the PurposeOfVisit entity, indicating why the user visited. (Relationship: PurposeOfVisit 1:N VisitLog)"
+        },
+        "collegeId": {
+          "type": "string",
+          "description": "Reference to the College entity associated with this specific visit. This might be the user's primary college or a chosen college for the visit. (Relationship: College 1:N VisitLog)"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "timestamp",
+        "purposeOfVisitId",
+        "collegeId"
+      ]
+    },
+    "College": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "College",
+      "type": "object",
+      "description": "Represents a department or college within the NEU institution.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the College entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the college or department (e.g., 'College of Nursing')."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "PurposeOfVisit": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PurposeOfVisit",
+      "type": "object",
+      "description": "Defines the predefined reasons for a user's visit to the library.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the PurposeOfVisit entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "A descriptive name for the purpose of visit (e.g., 'Study', 'Research', 'Borrowing')."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores individual user profiles including their institutional email, display name, role ('admin' or 'user'), associated college, and a flag indicating if they are blocked. The 'role' and 'isBlocked' fields are denormalized for authorization independence. Users can read their own profile, administrators can read and manage all profiles.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/visitLogs/{visitLogId}",
+        "definition": {
+          "entityName": "VisitLog",
+          "schema": {
+            "$ref": "#/backend/entities/VisitLog"
+          },
+          "description": "Records individual visits to the NEU Library. Each document includes the userId, timestamp, purpose of visit ID, and college ID. The userId, collegeId, and purposeOfVisitId are denormalized to ensure authorization independence for creation and enable efficient queries for administrators. Users can only create their own visit logs; administrators can read all visit logs for analytics.",
+          "params": [
+            {
+              "name": "visitLogId",
+              "description": "The unique identifier for a specific visit log entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/colleges/{collegeId}",
+        "definition": {
+          "entityName": "College",
+          "schema": {
+            "$ref": "#/backend/entities/College"
+          },
+          "description": "A lookup collection containing predefined college/department names. All authenticated users can read this collection for dropdown selection during check-in. Only administrators can create, update, or delete entries.",
+          "params": [
+            {
+              "name": "collegeId",
+              "description": "The unique identifier for a college or department."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/purposeOfVisits/{purposeId}",
+        "definition": {
+          "entityName": "PurposeOfVisit",
+          "schema": {
+            "$ref": "#/backend/entities/PurposeOfVisit"
+          },
+          "description": "A lookup collection containing predefined purposes for library visits (e.g., 'Study', 'Research'). All authenticated users can read this collection for dropdown selection during check-in. Only administrators can create, update, or delete entries.",
+          "params": [
+            {
+              "name": "purposeId",
+              "description": "The unique identifier for a purpose of visit."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The proposed Firestore structure prioritizes security, scalability, and debuggability by adhering to the core design principles, especially Authorization Independence and Structural Segregation. Authorization context is denormalized where critical. For user-specific actions, the users/{userId} document directly stores the user's role ('admin' or 'user') and isBlocked status. This means security rules can check request.auth.uid against the document ID or fetch the requesting user's own profile to determine their authorization level (e.g., get(/users/$(request.auth.uid)).data.role == 'admin') without performing expensive or insecure hierarchical get() calls to parent documents to determine permissions for subcollections. Each VisitLog document explicitly includes userId, collegeId, and purposeOfVisitId, making it a self-contained record for authorization checks (e.g., a user can only create a log if request.resource.data.userId == request.auth.uid). This eliminates the need for get() calls on related documents (like User, College, PurposeOfVisit) when evaluating access for a VisitLog document itself, except for validating the existence of referenced College and PurposeOfVisit documents, which are static lookup tables. Structural Segregation and QAPs (Query/Access Pattern Support): 1. /users/{userId}: This collection stores individual user profiles. Access is segregated: a user can read their own profile, while administrators (identified by their role: 'admin' in their own user document) can read and modify any user profile (e.g., to toggle isBlocked). This structure enables efficient searching for administrators and simple read/write rules for users. It supports QAPs for admins to list/search all users and for users to get their own profile. 2. /visitLogs/{visitLogId}: This is a flat, top-level collection for all visit entries. It is designed for high-volume writes by end-users and comprehensive reads/queries by administrators. End-users can only create new visit logs, ensuring data immutability and integrity for auditing. Administrators have full read access to this collection, allowing them to filter by date, college, or search for specific logs, thereby supporting various QAPs for analytics and reporting without performance bottlenecks. The userId, collegeId, and purposeOfVisitId fields within each log entry ensure that context is immediately available. 3. /colleges/{collegeId} and /purposeOfVisits/{purposeId}: These collections hold static lookup data. They have a homogeneous security posture: all authenticated users can read them (for dropdowns in the check-in form), but only administrators can create, update, or delete entries. This structural segregation simplifies rules and ensures data integrity for these reference data sets. Both support efficient list operations (QAPs) for all authenticated users. This design leverages explicit data modeling, consistent naming, and flat structures for frequently accessed or globally readable data to minimize rule complexity and maximize query efficiency, while using path-based ownership for user-specific data to ensure strong security guarantees."
+  }
+}

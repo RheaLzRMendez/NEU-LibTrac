@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "library-hero",
+      "description": "New Era University Library building background.",
+      "imageUrl": "https://scontent.fmnl17-6.fna.fbcdn.net/v/t39.30808-6/477579626_122108352272743934_80451274266931311_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=109&ccb=1-7&_nc_sid=2a1932&_nc_eui2=AeFNet14I4oL9wkmyJZadaFBmfYDj1U4U5CZ9gOPVThTkPiQ5C3Fu13L1J3U2F8RtIRxAkQ3uGH8gKnvN0C1iGgN&_nc_ohc=d46thpZOUxAQ7kNvwFonD4w&_nc_oc=Adk7dv22XhNCpmVsEm7uonDFWbc6h9Uz5jBY11z_v6OPkwqmIeDvBLwtoqSIl_YmlK8&_nc_zt=23&_nc_ht=scontent.fmnl17-6.fna&_nc_gid=K7WY85-yRgXPs5M52Y0cvA&_nc_ss=8&oh=00_Afza78CR3EeMA9QyTk4Cg_urlP1tFNFj3uU31BL36cWo1A&oe=69BC473C",
+      "imageHint": "university building"
+    },
+    {
+      "id": "student-dashboard-hero",
+      "description": "New Era University Library interior background for students.",
+      "imageUrl": "https://www.newera.edu.my/images/facilities/library.jpg",
+      "imageHint": "library interior"
+    },
+    {
+      "id": "neu-logo",
+      "description": "New Era University high-resolution logo.",
+      "imageUrl": "https://scontent.fmnl17-6.fna.fbcdn.net/v/t39.30808-6/587748546_122156030186743934_2851142283168601511_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeFVUDQCDMV4UklAy_6gz_1zaPDH8DoECgpo8MfwOgQKCubEr6vHtnmaNLI3lHoP5-E0uEPGgIQJD1NyvLHYlZI-&_nc_ohc=XcurpbSYAxYQ7kNvwEW2gdc&_nc_oc=AdnEdfKjZx79qFCIcz_xqiZJgjEnkWl17BiBGrbuZqwVnWdWR0wWxKA9DDKhuz5WXKk&_nc_zt=23&_nc_ht=scontent.fmnl17-6.fna&_nc_gid=55Cw8NDxlHH5gnp2S7n0yw&_nc_ss=8&oh=00_AfwO7t9_BxCzVhW8Kpcj84rPQfKJn-5AjBUvsucxiJaI9Q&oe=69BC51F5",
+      "imageHint": "university logo"
+    },
+    {
+      "id": "admin-avatar",
+      "description": "Professional profile picture for library staff.",
+      "imageUrl": "https://picsum.photos/seed/admin-user/100/100",
+      "imageHint": "professional person"
+    }
+  ]
+}
