@@ -81,7 +81,7 @@ export default function AdminDashboard() {
   }, [filteredLogs]);
 
   const generatePDF = () => {
-    const doc = jsPDF();
+    const doc = new jsPDF();
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
     doc.text("NEU Library Visitor Report", 14, 22);
@@ -278,7 +278,7 @@ export default function AdminDashboard() {
             </div>
           </CardContent>
         </Card>
-
+// sdadsas
         <Card className="border-none shadow-md bg-[#336600] rounded-[2rem] p-8 text-white">
           <div className="h-full flex flex-col justify-between">
             <div className="space-y-6">
