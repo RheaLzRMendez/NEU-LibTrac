@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Check-in</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/checkin.css">
+  <style>
+    /* Scrollable dropdown styling */
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 10px gold;
+      transform: scale(1.02);
+    }
+    select option { padding: 8px; }
+    select { max-height: 150px; overflow-y: auto; }
+    select::-webkit-scrollbar { width: 8px; }
+    select::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+    select::-webkit-scrollbar-thumb { background: gold; border-radius: 4px; }
+    select::-webkit-scrollbar-thumb:hover { background: darkgoldenrod; }
+  </style>
+</head>
+<body class="student-dashboard">
+
+<!-- Top bar -->
+<div class="top-bar">
+  <div class="logo">
+    <img src="/logo.png" alt="NEU Logo">
+  </div>
+  <div class="logout-btn-wrapper">
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </div>
+</div>
+
+<div class="overlay">
+  <div class="container">
+    
+    <!-- Left greeting -->
+    <div class="left-panel">
+      <span id="helloMsg"></span>
+    </div>
+    
+    <!-- Right panel wrapper -->
+    <div class="right-panel-wrapper">
+      <div class="panel-header">Library Check-in</div>
+
+      <div class="right-panel">
+        <div class="form-section">
+          <form id="checkinForm">
+            <!-- Purpose -->
+            <label>Purpose of Visit</label>
+            <select id="purpose">
+              <option>Study</option>
+              <option>Research</option>
+              <option>Borrowing</option>
+              <option>Return</option>
+              <option>Computer Use</option>
+              <option>Meeting</option>
+              <option>Event</option>
+              <option>Quiet Room</option>
+              <option>Printing / Photocopying</option>
+              <option>Consultation</option>
+            </select>
+
+            <!-- College -->
+            <label>Your Department/College</label>
+            <select id="college">
+              <option>COA – College of Accountancy</option>
+              <option>CAg – College of Agriculture</option>
+              <option>CAS – College of Arts and Sciences</option>
+              <option>CBA – College of Business Administration</option>
+              <option>COC – College of Communication</option>
+              <option>CICS – College of Informatics and Computing Studies</option>
+              <option>CCrim – College of Criminology</option>
+              <option>CED – College of Education</option>
+              <option>CEA – College of Engineering and Architecture</option>
+              <option>CMT – College of Medical Technology</option>
+              <option>CMid – College of Midwifery</option>
+              <option>CMus – College of Music</option>
+              <option>CN – College of Nursing</option>
+              <option>CPT – College of Physical Therapy</option>
+              <option>CRT – College of Respiratory Therapy</option>
+              <option>CLaw – College of Law</option>
+              <option>CMED – College of Medicine</option>
+              <option>SIR – School of International Relations</option>
+            </select>
+
+            <!-- New Field: User Type -->
+            <label>Are you a:</label>
+            <select id="userType">
+              <option>Student</option>
+              <option>Faculty/Staff</option>
+            </select>
+
+            <button type="submit" class="checkin-btn">Check In</button>
+          </form>
+          <div id="successMsg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/checkin.js"></script>
+<script>
+  // Logout button function
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = "index.html";
+  });
+</script>
+</body>
+</html>
