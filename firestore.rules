@@ -2,51 +2,33 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    /**
-     * NEU Library Visitor Management System - Security Rules
-     */
-
-    // --- Helper Functions ---
-
     function isSignedIn() {
       return request.auth != null;
     }
 
-    /** @description Checks if the user is the owner of the document */
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    /** @description Validates student email domain */
     function isStudentEmail() {
       return isSignedIn() && request.auth.token.email.matches('.*@neu\\.edu\\.ph$');
     }
 
-    /** @description Validates admin email domain */
-    function isAdminEmail() {
-      return isSignedIn() && request.auth.token.email.matches('.*@gmail\\.com$');
-    }
-
-    /** @description Checks if the user has the 'admin' role in their profile. */
     function isAdmin() {
-      return isSignedIn() && 
+      return isSignedIn() &&
         exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
-    /** @description Checks if the user's account is active. */
     function isNotBlocked() {
-      return isSignedIn() && 
+      return isSignedIn() &&
         exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isBlocked == false;
     }
 
-    // --- Collection Rules ---
-
     match /users/{userId} {
       allow get: if isOwner(userId) || isAdmin();
       allow list: if isAdmin();
-      // Allow creation and update for syncing profile data on login
       allow create: if isOwner(userId);
       allow update: if isOwner(userId) || isAdmin();
       allow delete: if isAdmin();
@@ -55,10 +37,8 @@ service cloud.firestore {
     match /visitLogs/{visitLogId} {
       allow get: if isAdmin() || (resource != null && resource.data.userId == request.auth.uid);
       allow list: if isAdmin();
-      // Students can create logs if they aren't blocked
       allow create: if isStudentEmail() && isNotBlocked() && request.resource.data.userId == request.auth.uid;
-      // Admins can manage logs for cleanup if necessary
-      allow update, delete: if isAdmin(); 
+      allow update, delete: if isAdmin();
     }
 
     match /colleges/{collegeId} {
