@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NEU Library Admin Dashboard</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="admin-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <img src="logo.png" alt="NEU Library Logo" class="logo">
+    <nav>
+      <button class="nav-btn" id="dashboardBtn">Dashboard</button>
+      <button class="nav-btn" id="usersBtn">Users</button>
+      <button class="nav-btn" id="adminBtn">AI Insights</button>
+      <button class="nav-btn logout" id="logoutBtn">Logout</button>
+    </nav>
+    <p class="active-admin">Active Admin</p>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Dashboard Section -->
+    <section id="dashboardSection">
+      <div class="section-bar">
+        <h2 class="section-title">Admin Dashboard</h2>
+      </div>
+      <div class="metrics">
+        <div class="metric-card">Total Visitors <span id="totalVisitors">16</span></div>
+        <div class="metric-card">Daily Peak <span id="dailyPeak">1pm - 3pm</span></div>
+        <div class="metric-card">System Users <span id="systemUsers">2</span></div>
+        <div class="metric-card">Live Sync <span id="liveSync">Connected</span></div>
+      </div>
+      <div class="charts">
+        <div class="chart-box">
+          <h3>Visitor Trends</h3>
+          <p>Hourly visitor distribution (Column Graph)</p>
+          <canvas id="hourlyChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Visitors by College</h3>
+          <p>Visitors by department (Pie Graph)</p>
+          <canvas id="collegeChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Users Section -->
+    <section id="usersSection" style="display:none;">
+      <div class="section-bar">
+        <h2 class="section-title">User Administration</h2>
+      </div>
+
+      <!-- Search bar -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by name or email">
+      </div>
+
+      <!-- User table -->
+      <div class="users-box">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Identification</th>
+              <th>Institutional Email</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="visitorTable">
+            <tr>
+              <td>Rhealiza Rose T. Mendez</td>
+              <td>rhealizarose.mendez@neu.edu.ph</td>
+              <td class="status-active">Active</td>
+              <td><button class="blockBtn">Block Access</button></td>
+            </tr>
+            <tr>
+              <td>Rhealiza Rose T. Mendez</td>
+              <td>eyamendez18june@gmail.com</td>
+              <td class="status-active">Active</td>
+              <td><button class="blockBtn">Block Access</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- AI Insights Section -->
+    <section id="adminSection" style="display:none;">
+      <div class="section-bar">
+        <h2 class="section-title">AI Insights</h2>
+      </div>
+      <div class="analysis-engine">
+        <h4 class="insights-subtitle">Generate Analysis</h4>
+        <p id="analysisStatus">No active analysis</p>
+        <p class="section-desc">
+          Run the AI engine to analyze current visitor logs and generate insights for library management.
+        </p>
+        <button id="generateAnalysis">Start Analysis Engine</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="admin-footer">
+    © 2026 NEU Library | Admin Portal
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/admin.js"></script>
+
+  <script>
+    // Sidebar navigation
+    function showSection(sectionId) {
+      document.getElementById("dashboardSection").style.display = "none";
+      document.getElementById("usersSection").style.display = "none";
+      document.getElementById("adminSection").style.display = "none";
+      document.getElementById(sectionId).style.display = "block";
+    }
+
+    document.getElementById("dashboardBtn").addEventListener("click", () => {
+      showSection("dashboardSection");
+    });
+
+    document.getElementById("usersBtn").addEventListener("click", () => {
+      showSection("usersSection");
+    });
+
+    document.getElementById("adminBtn").addEventListener("click", () => {
+      showSection("adminSection");
+    });
+
+    // Logout (redirect back to login.html)
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      // Optional: revoke Google session
+      google.accounts.id.disableAutoSelect();
+      window.location.href = "index.html";
+    });
+
+    // Analysis Engine simulation
+    document.getElementById("generateAnalysis").addEventListener("click", () => {
+      document.getElementById("analysisStatus").innerText = "Analysis running...";
+      setTimeout(() => {
+        document.getElementById("analysisStatus").innerText =
+          "AI Engine complete: Nursing and Engineering show highest growth trend.";
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
